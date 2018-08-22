@@ -1,0 +1,15 @@
+<p>
+  {{letters[0].getCharacter()}}
+</p>
+
+<p>
+  {{dictionary.getWords()[0]}}
+</p>
+
+<div class="board">
+  <div *ngFor="let row of board.getMatrix()">
+    <div *ngFor="let cell of row">
+      <span *ngIf="cell.getLetter()">{{cell.getLetter().getCharacter()}}</span>
+    </div>
+  </div>
+</div>
