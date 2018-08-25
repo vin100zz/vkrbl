@@ -33,7 +33,9 @@ export class SolverService {
       let simulatedCells = [new Cell(anchor.getRow(), anchor.getColumn(), letter)];
 
       let newHorizontalWord = board.getSimulatedHorizontalWord(anchor, simulatedCells);
-      words.push(newHorizontalWord);
+      if (this.isWordValid(newHorizontalWord)) {
+        words.push(newHorizontalWord);
+      }
 
       this.computeFeasibleWordsByAddingLettersOnRightSide(remainingLetters, board, anchor, simulatedCells, words);
       this.computeFeasibleWordsByAddingLettersOnLeftSide(remainingLetters, board, anchor, simulatedCells, words);
@@ -49,9 +51,11 @@ export class SolverService {
         let remainingLetters = letters.filter(l => l.getCharacter() !== letter.getCharacter());
         let newSimulatedCells = simulatedCells.slice(0);
         newSimulatedCells.push(new Cell(getNextFreeLeftCell.getRow(), getNextFreeLeftCell.getColumn(), letter));
-        let newHorizontalWord = board.getSimulatedHorizontalWord(anchor, newSimulatedCells);
-        words.push(newHorizontalWord);
 
+        let newHorizontalWord = board.getSimulatedHorizontalWord(anchor, newSimulatedCells);
+        if (this.isWordValid(newHorizontalWord)) {
+          words.push(newHorizontalWord);
+        }
         this.computeFeasibleWordsByAddingLettersOnRightSide(remainingLetters, board, anchor, newSimulatedCells, words);
         this.computeFeasibleWordsByAddingLettersOnLeftSide(remainingLetters, board, anchor, newSimulatedCells, words);
       });
@@ -65,13 +69,19 @@ export class SolverService {
         let remainingLetters = letters.filter(l => l.getCharacter() !== letter.getCharacter());
         let newSimulatedCells = simulatedCells.slice(0);
         newSimulatedCells.push(new Cell(nextFreeRightCell.getRow(), nextFreeRightCell.getColumn(), letter));
+
         let newHorizontalWord = board.getSimulatedHorizontalWord(anchor, newSimulatedCells);
-        words.push(newHorizontalWord);
+        if (this.isWordValid(newHorizontalWord)) {
+          words.push(newHorizontalWord);
+        }
 
         this.computeFeasibleWordsByAddingLettersOnRightSide(remainingLetters, board, anchor, newSimulatedCells, words);
       });
     }
   }
 
+  private isWordValid(word: string): boolean {
+    return true;
+  }
 
 }

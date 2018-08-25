@@ -66,9 +66,4 @@ export class DictionaryService {
     });
   }
 
-  wordExists(word: string): boolean {
-    return true; //this.words.includes(word);
-  }
-
-
 }
