@@ -24,11 +24,18 @@ export class DictionaryService {
 
   tree: Map<string, Node> = new Map<string, Node>();
 
+  readyCb: Function;
+
   constructor(private httpClient: HttpClient) {
     this.httpClient.get<string[]>('assets/dictionary.json').subscribe(data => {
       this.words = data;
       this.buildTree();
+      this.readyCb();
     });
+  }
+
+  whenReady(readyCb: Function): void {
+    this.readyCb = readyCb;
   }
 
   getWords(): string[] {
@@ -57,6 +64,10 @@ export class DictionaryService {
 
       currentNode.setValidWord();
     });
+  }
+
+  wordExists(word: string): boolean {
+    return true; //this.words.includes(word);
   }
 
 

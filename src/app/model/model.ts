@@ -102,7 +102,7 @@ export class Board {
     let row = anchor.getRow();
     let column = anchor.getColumn();
     let word = this.getLetterInSimulatedLetters(simulatedCells, row, column).getCharacter();
-    while (column >= 0) {
+    while (column > 0) {
       --column;
       let letter = this.getLetterOnBoardOrInSimulatedLetters(simulatedCells, row, column);
       if (letter) {
@@ -140,7 +140,7 @@ export class Board {
   getNextFreeLeftCell(anchor: Cell, simulatedCells: Cell[]): Cell {
     let row = anchor.getRow();
     let column = anchor.getColumn();
-    while (column >= 0) {
+    while (column > 0) {
       --column;
       let letter = this.getLetterOnBoardOrInSimulatedLetters(simulatedCells, row, column);
       if (!letter) {
