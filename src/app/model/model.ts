@@ -5,7 +5,7 @@ export class Letter {
     this.character = character;
   }
 
-  getCharacter(): String {
+  getCharacter(): string {
     return this.character;
   }
 }
@@ -16,9 +16,10 @@ export class Cell {
   column: number;
   letter: Letter = null;
 
-  constructor(row: number, column: number) {
+  constructor(row: number, column: number, letter: Letter = null) {
     this.row = row;
     this.column = column;
+    this.letter = letter;
   }
 
   getRow(): number {
@@ -93,6 +94,71 @@ export class Board {
   getBottomCell(cell: Cell): Cell {
     if (cell.getRow() < this.NB_CELLS - 1) {
       return this.matrix[cell.getRow() + 1][cell.getColumn()];
+    }
+    return null;
+  }
+
+  getSimulatedHorizontalWord(anchor: Cell, simulatedCells: Cell[]): string {
+    let row = anchor.getRow();
+    let column = anchor.getColumn();
+    let word = this.getLetterInSimulatedLetters(simulatedCells, row, column).getCharacter();
+    while (column >= 0) {
+      --column;
+      let letter = this.getLetterOnBoardOrInSimulatedLetters(simulatedCells, row, column);
+      if (letter) {
+        word = letter.getCharacter() + word;
+      } else {
+        break;
+      }
+    }
+    column = anchor.getColumn();
+    while (column < this.NB_CELLS - 1) {
+      ++column;
+      let letter = this.getLetterOnBoardOrInSimulatedLetters(simulatedCells, row, column);
+      if (letter) {
+        word += letter.getCharacter();
+      } else {
+        break;
+      }
+    }
+    return word;
+  }
+
+  private getLetterOnBoardOrInSimulatedLetters(simulatedCells: Cell[], row: number, column: number): Letter {
+    let letter = this.matrix[row][column].getLetter();
+    if (letter) {
+      return letter;
+    }
+    return this.getLetterInSimulatedLetters(simulatedCells, row, column);
+  }
+
+  private getLetterInSimulatedLetters(simulatedCells: Cell[], row: number, column: number): Letter {
+    let simulatedCell = simulatedCells.find(cell => cell.getRow() === row && cell.getColumn() === column);
+    return simulatedCell ? simulatedCell.getLetter() : null;
+  }
+
+  getNextFreeLeftCell(anchor: Cell, simulatedCells: Cell[]): Cell {
+    let row = anchor.getRow();
+    let column = anchor.getColumn();
+    while (column >= 0) {
+      --column;
+      let letter = this.getLetterOnBoardOrInSimulatedLetters(simulatedCells, row, column);
+      if (!letter) {
+        return this.matrix[row][column];
+      }
+    }
+    return null;
+  }
+
+  getNextFreeRightCell(anchor: Cell, simulatedCells: Cell[]): Cell {
+    let row = anchor.getRow();
+    let column = anchor.getColumn();
+    while (column < this.NB_CELLS - 1) {
+      ++column;
+      let letter = this.getLetterOnBoardOrInSimulatedLetters(simulatedCells, row, column);
+      if (!letter) {
+        return this.matrix[row][column];
+      }
     }
     return null;
   }

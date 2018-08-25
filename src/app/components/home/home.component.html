@@ -7,7 +7,17 @@
 </p>
 
 <div class="board">
-  <div *ngFor="let row of board.getMatrix()">
+  <div>
+    <div></div>
+    <div *ngFor="let column of board.getMatrix(); let i = index">
+      <span>{{i}}</span>
+    </div>
+  </div>
+
+  <div *ngFor="let row of board.getMatrix(); let i = index">
+    <div>
+      <span>{{i}}</span>
+    </div>
     <div *ngFor="let cell of row">
       <span *ngIf="cell.getLetter()">{{cell.getLetter().getCharacter()}}</span>
     </div>

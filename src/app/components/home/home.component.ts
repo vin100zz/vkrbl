@@ -19,16 +19,20 @@ export class HomeComponent implements OnInit {
   constructor(private dictionary: DictionaryService, private solver: SolverService) { }
 
   ngOnInit() {
-    this.letters = [new Letter('A'), new Letter('S'), new Letter('H'), new Letter('B'), new Letter('U'), new Letter('T'), new Letter('O')];
+    //this.letters = [new Letter('A'), new Letter('S'), new Letter('H'), new Letter('B'), new Letter('U'), new Letter('T'), new Letter('O')];
+
+    this.letters = [new Letter('A'), new Letter('B'), new Letter('C')];
 
     this.board = new Board();
 
-    this.board.getMatrix()[7][6].setLetter(new Letter('C'));
-    this.board.getMatrix()[7][7].setLetter(new Letter('A'));
-    this.board.getMatrix()[7][8].setLetter(new Letter('R'));
+    this.board.getMatrix()[7][5].setLetter(new Letter('Z'));
+    this.board.getMatrix()[7][7].setLetter(new Letter('Z'));
+    //this.board.getMatrix()[7][8].setLetter(new Letter('R'));
 
     let anchors = this.solver.computeAnchors(this.board);
     console.log(anchors);
+
+    this.solver.computeFeasibleWords(this.letters, this.board, anchors[1]);
 
     this.dictionary.getTree();
 
